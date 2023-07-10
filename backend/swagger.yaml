@@ -1,0 +1,235 @@
+# please add "JWT" before add jwt token
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: Optional multiline or single-line description in HTML.
+  version: 0.1.9
+components:
+  securitySchemes:
+    JWT:  
+      type: apiKey  
+      in: header  
+      name: Authorization
+paths:
+  /signup:
+    post:
+      security:
+        - JWT: []  
+      tags:
+      - User
+      summary: Creates a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+            example:
+                name: "user"
+                email: "user@gmail.com"
+                password: "user"
+      responses: 
+        '201':
+          description: Created
+  /login:
+    post:
+      security:
+        - JWT: []  
+      tags:
+      - User
+      summary: User login.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                 email:
+                  type: string
+                 password:
+                  type: string
+            example:
+                email: "user@gmail.com"
+                password: "user"
+      responses: 
+        '201':
+          description: Login successfully
+  /create_blog:
+    post:
+      security:
+        - JWT: []  
+      tags:
+      - Blogs
+      summary: Creates a blog.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                category:
+                  type: string
+                description:
+                  type: string
+                userId:
+                  type: string
+                creator:
+                  type: string
+            example:
+                title: "Blog title"
+                category: "Blog category"
+                description: "Blog description"
+                userId: "userId"
+                creator: "creator"
+      responses: 
+        '201':
+          description: Blog is created successfully
+  /blog:
+    get:
+      security:
+        - JWT: []
+      tags:
+      - Blogs
+      summary: Get Blog list.
+      responses:
+        '200':
+          description: Get all blogs
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+  /blog/{id}:
+    get:
+      security:
+        - JWT: []  
+      tags:
+      - Blogs
+      summary: Get single Blog.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: Get single Blog successfully
+    delete:
+      security:
+        - JWT: []  
+      tags:
+      - Blogs
+      summary: Delete blog.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: Blog deleted successfully
+    put:
+      security:
+        - JWT: []  
+      tags:
+      - Blogs
+      summary: Update blog.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type : string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                category:
+                  type: string
+                description:
+                  type: string
+            example:
+                title: "Blog title"
+                category: "Blog category"
+                description: "Blog description"
+      responses: 
+        '201':
+          description: Blog updated successfully
+  /blog/searchData:
+    post:
+      security:
+        - JWT: []  
+      tags:
+      - Blogs
+      summary: Search blog by title or category.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+      responses: 
+        '200':
+          description: Search blog successfully
+  /blog/comment:
+    post:
+      security:
+        - JWT: []  
+      tags:
+      - Blogs
+      summary: Add comment for blog.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                blogId:
+                  type: string
+                comment:
+                  type: string
+            example:
+                blogId: "1234567890"
+                comment: "Nice blog"
+      responses: 
+        '201':
+          description: Comment added successfully
+  /my_blog/{id}:
+    get:
+      security:
+        - JWT: []  
+      tags:
+      - Blogs
+      summary: Get my blogs.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: Get my blogs successfully
